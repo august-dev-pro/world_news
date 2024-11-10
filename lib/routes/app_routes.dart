@@ -1,6 +1,7 @@
 // routes/app_routes.dart
 import 'package:flutter/material.dart';
 import 'package:world_news/views/NewsDetailPage.dart';
+import 'package:world_news/views/Settings_Page.dart';
 import 'package:world_news/views/home_page.dart';
 
 class News {
@@ -14,11 +15,16 @@ class News {
 class AppRoutes {
   static const String home = '/';
   static const String newsDetail = '/newsDetail';
+  static const String setting = '/settings';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case home:
         return MaterialPageRoute(builder: (_) => HomePage());
+
+      case setting:
+        return MaterialPageRoute(builder: (_) => const SettingsPage());
+
       /* case newsDetail:
         return MaterialPageRoute(
           builder: (_) => NewsDetailView(article: settings.arguments),

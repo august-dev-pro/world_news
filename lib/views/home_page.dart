@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Header(), // Widget pour le header
+            const Header(), // Widget pour le header
             BannerSection(), // Widget pour la bannière
             NewsTabsWidget(), // Widget pour les tabs des actualités
             // Si tu souhaites ajouter d'autres widgets comme une liste d'articles :

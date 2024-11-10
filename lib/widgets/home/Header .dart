@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart'; // Pour formater la date
+import 'package:intl/intl.dart';
+import 'package:world_news/routes/app_routes.dart'; // Pour formater la date
 
 class Header extends StatelessWidget {
+  const Header({super.key});
   @override
   Widget build(BuildContext context) {
     // Formatage de la date actuelle
@@ -9,8 +11,9 @@ class Header extends StatelessWidget {
         DateFormat('EEEE, d MMMM yyyy').format(DateTime.now());
 
     return Container(
-      margin: EdgeInsets.only(top: 60.0, bottom: 15.0), // Espacement en haut
-      padding: EdgeInsets.only(left: 20.0, right: 20.0),
+      margin:
+          const EdgeInsets.only(top: 60.0, bottom: 15.0), // Espacement en haut
+      padding: const EdgeInsets.only(left: 20.0, right: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -42,40 +45,63 @@ class Header extends StatelessWidget {
             ],
           ),
           // Icônes de recherche et notification à droite
+
           Row(
             children: [
-              Container(
-                padding: const EdgeInsets.all(4.0), // Padding autour de l'icône
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // Forme circulaire
-                  color: Colors.white, // Couleur de fond pour l'icône
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 233, 233, 233),
-                    width: 1, // Bordure grise
+              SizedBox(
+                width: 30, // Contrôle la largeur de l'icône circulaire
+                height: 30, // Contrôle la hauteur de l'icône circulaire
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle, // Forme circulaire
+                    color: Colors.white, // Couleur de fond pour l'icône
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 233, 233, 233),
+                      width: 1, // Bordure grise
+                    ),
                   ),
-                ),
-                child: const Icon(
-                  Icons.search,
-                  color: Color.fromARGB(255, 90, 90, 90),
-                  size: 22,
+                  child: IconButton(
+                    padding: EdgeInsets.zero, // Supprime le padding par défaut
+                    constraints:
+                        const BoxConstraints(), // Enlève les contraintes par défaut
+                    icon: const Icon(
+                      Icons.settings,
+                      color: Color.fromARGB(255, 90, 90, 90),
+                      size: 22, // Taille de l'icône
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.setting);
+                    },
+                  ),
                 ),
               ),
               const SizedBox(width: 8), // Espacement entre les deux icônes
 
-              Container(
-                padding: const EdgeInsets.all(4.0), // Padding autour de l'icône
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle, // Forme circulaire
-                  color: Colors.white, // Couleur de fond pour l'icône
-                  border: Border.all(
-                    color: const Color.fromARGB(255, 233, 233, 233),
-                    width: 1, // Bordure grise
+              SizedBox(
+                width: 30, // Contrôle la largeur de l'icône circulaire
+                height: 30, // Contrôle la hauteur de l'icône circulaire
+                child: Container(
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle, // Forme circulaire
+                    color: Colors.white, // Couleur de fond pour l'icône
+                    border: Border.all(
+                      color: const Color.fromARGB(255, 233, 233, 233),
+                      width: 1, // Bordure grise
+                    ),
                   ),
-                ),
-                child: const Icon(
-                  Icons.notifications,
-                  color: const Color.fromARGB(255, 90, 90, 90),
-                  size: 22,
+                  child: IconButton(
+                    padding: EdgeInsets.zero, // Supprime le padding par défaut
+                    constraints:
+                        const BoxConstraints(), // Enlève les contraintes par défaut
+                    icon: const Icon(
+                      Icons.notifications,
+                      color: Color.fromARGB(255, 90, 90, 90),
+                      size: 22, // Taille de l'icône
+                    ),
+                    onPressed: () {
+                      Navigator.pushNamed(context, AppRoutes.setting);
+                    },
+                  ),
                 ),
               ),
             ],
