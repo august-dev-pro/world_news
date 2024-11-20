@@ -23,7 +23,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => HomePage());
 
       case setting:
-        return MaterialPageRoute(builder: (_) => const SettingsPage());
+        return MaterialPageRoute(builder: (_) => SettingsPage());
 
       /* case newsDetail:
         return MaterialPageRoute(
@@ -34,8 +34,8 @@ class AppRoutes {
         if (args != null) {
           return MaterialPageRoute(
             builder: (_) => NewsDetailPage(
-              about:
-                  args['about'] ?? '', // Assurez-vous que vous passez 'about'
+              /*      about:
+                  args['about'] ?? '', // Assurez-vous que vous passez 'about' */
               title:
                   args['title'] ?? '', // Assurez-vous que vous passez 'title'
               details: args['details'] ??
