@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class NewsDetailPage extends StatefulWidget {
   final String title;
@@ -156,14 +157,16 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
         ),
       ),
       bottomNavigationBar: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           border: Border(
-            top: BorderSide(color: Colors.grey.shade300, width: 1.5),
+            top: BorderSide(
+                color: Color.fromARGB(52, 224, 224, 224), width: 1.0),
           ),
           color: Colors.white,
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+          padding:
+              const EdgeInsets.only(top: 15, left: 16, right: 16, bottom: 5),
           child: Row(
             children: [
               // Section gauche : Like et Comment
@@ -176,22 +179,49 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                         _isLiked = !_isLiked;
                       });
                     },
-                    child: Row(
-                      children: [
-                        Icon(
-                          _isLiked ? Icons.favorite : Icons.favorite_border,
-                          color: _isLiked ? Colors.red : Colors.black54,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '42', // Exemple de nombre de likes
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black87,
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 200),
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 3.0, bottom: 3.0),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(30),
+                        /*  boxShadow: _isLiked
+                            ? [
+                                BoxShadow(
+                                  color: Colors.red.withOpacity(0.5),
+                                  spreadRadius: 1,
+                                  blurRadius: 8,
+                                )
+                              ]
+                            : [], */
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            _isLiked ? Icons.favorite : Icons.favorite_border,
+                            color: _isLiked ? Colors.red : Colors.black54,
+                            size: 22,
+                            shadows: _isLiked
+                                ? [
+                                    Shadow(
+                                      color: Colors.red.withOpacity(1),
+                                      offset: const Offset(0, 2),
+                                      blurRadius: 10,
+                                    ),
+                                  ]
+                                : [],
                           ),
-                        ),
-                      ],
+                          const SizedBox(width: 5),
+                          const Text(
+                            '46K', // Exemple de nombre de likes
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                   const SizedBox(width: 20),
@@ -200,37 +230,45 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     onTap: () {
                       // Logique pour les commentaires
                     },
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.comment,
-                          color: Colors.black54,
-                          size: 24,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          '15', // Exemple de nombre de commentaires
-                          style: const TextStyle(
-                            fontSize: 16,
+                    child: Container(
+                      padding: const EdgeInsets.only(
+                          left: 10.0, right: 10.0, top: 3.0, bottom: 3.0),
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.05),
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      child: const Row(
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.comment,
                             color: Colors.black87,
+                            size: 17,
                           ),
-                        ),
-                      ],
+                          SizedBox(width: 8),
+                          Text(
+                            '97', // Exemple de nombre de commentaires
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: Colors.black87,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ],
               ),
-              const Spacer(), // Ajoute un espace flexible entre les deux sections
+              const Spacer(),
               // Section droite : Cercle de feedback
               Stack(
                 alignment: Alignment.center,
                 children: [
                   SizedBox(
-                    width: 40,
-                    height: 40,
+                    width: 35,
+                    height: 35,
                     child: CircularProgressIndicator(
                       value: _scrollProgress / 100,
-                      strokeWidth: 4,
+                      strokeWidth: 3,
                       valueColor: const AlwaysStoppedAnimation<Color>(
                           Colors.indigoAccent),
                       backgroundColor: Colors.grey[300],
@@ -239,7 +277,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                   Text(
                     '${_scrollProgress.toInt()}%',
                     style: const TextStyle(
-                      fontSize: 14,
+                      fontSize: 11,
                       fontWeight: FontWeight.bold,
                       color: Colors.black87,
                     ),

@@ -27,7 +27,7 @@ class _HomePageState extends State<HomePage> {
     } else if (index == 2) {
       Navigator.pushNamed(context, AppRoutes.home);
     } else if (index == 3) {
-      Navigator.pushNamed(context, AppRoutes.newsDetail);
+      Navigator.pushNamed(context, AppRoutes.profile);
     }
   }
 
