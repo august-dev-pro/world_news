@@ -32,6 +32,9 @@ dependencies:
     sdk: flutter
   intl: ^0.17.0
   font_awesome_flutter: ^10.2.0
+  http: ^0.13.3
+  flutter_dotenv: ^5.0.2
+  go_router: ^6.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -80,6 +83,8 @@ flutter:
     - assets/imgs/buildding.jpg
     - assets/imgs/climatReunion.jpeg
     - assets/imgs/marches-financiers.jpg
+    - assets/imgs/user.jpg
+    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

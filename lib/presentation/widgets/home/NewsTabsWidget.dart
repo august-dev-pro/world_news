@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:world_news/routes/app_routes.dart';
+import 'package:go_router/go_router.dart';
+import 'package:world_news/config/routes.dart';
+import 'package:world_news/main.dart';
 
 class NewsTabsWidget extends StatefulWidget {
   @override
@@ -158,10 +160,9 @@ class _NewsTabsWidgetState extends State<NewsTabsWidget> {
                       setState(() {
                         _clickedItems[index] = false;
                       });
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.newsDetail,
-                        arguments: {
+                      context.go(
+                        '/newsDetail',
+                        extra: {
                           'about': item['about'],
                           'title': item['title'],
                           'details': item['details'],

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class MyProfile extends StatefulWidget {
+  const MyProfile({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyProfileState createState() => _MyProfileState();
 }
 
@@ -24,7 +28,7 @@ class _MyProfileState extends State<MyProfile> {
         elevation: 1,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
         title: const Text(
           "Mon Profil",
@@ -50,15 +54,15 @@ class _MyProfileState extends State<MyProfile> {
                   const CircleAvatar(
                     radius: 50,
                     backgroundImage: AssetImage(
-                        'assets/images/profile.jpg'), // Votre image de profil
+                        'assets/imgs/user.jpg'), // Votre image de profil
                   ),
                   const SizedBox(height: 10),
                   const Text(
-                    "Jean Dupont",
+                    "Julie Candreva",
                     style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
                   ),
                   const Text(
-                    "@jeandupont",
+                    "@juliecandreva723",
                     style: TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const SizedBox(height: 10),

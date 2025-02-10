@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:world_news/routes/app_routes.dart'; // Pour formater la date
+import 'package:world_news/config/routes.dart'; // Pour formater la date
 
 class Header extends StatelessWidget {
   const Header({super.key});
@@ -70,7 +71,7 @@ class Header extends StatelessWidget {
                       size: 22, // Taille de l'icône
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.setting);
+                      context.go('/setting');
                     },
                   ),
                 ),
@@ -99,7 +100,7 @@ class Header extends StatelessWidget {
                       size: 22, // Taille de l'icône
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, AppRoutes.setting);
+                      context.go('setting');
                     },
                   ),
                 ),

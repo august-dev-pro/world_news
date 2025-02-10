@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:world_news/widgets/home/BannerWidget.dart';
-import 'package:world_news/widgets/home/Header%20.dart';
-import 'package:world_news/widgets/home/NewsTabsWidget.dart';
-import 'package:world_news/widgets/bottom_nav_bar.dart'; // Importer le composant BottomNavBar
-import 'package:world_news/routes/app_routes.dart'; // Importer les routes pour la navigation
+import 'package:go_router/go_router.dart';
+import 'package:world_news/presentation/widgets/home/BannerWidget.dart';
+import 'package:world_news/presentation/widgets/home/Header%20.dart';
+import 'package:world_news/presentation/widgets/home/NewsTabsWidget.dart';
+import 'package:world_news/presentation/widgets/bottom_nav_bar.dart'; // Importer le composant BottomNavBar
+import 'package:world_news/config/routes.dart'; // Importer les routes pour la navigation
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,13 +22,13 @@ class _HomePageState extends State<HomePage> {
 
     // Navigation vers la page appropriée en fonction de l'index sélectionné
     if (index == 0) {
-      Navigator.pushNamed(context, AppRoutes.home);
+      context.go('/');
     } else if (index == 1) {
-      Navigator.pushNamed(context, AppRoutes.newsDetail);
+      context.go('/newsDetail');
     } else if (index == 2) {
-      Navigator.pushNamed(context, AppRoutes.home);
+      context.go('/');
     } else if (index == 3) {
-      Navigator.pushNamed(context, AppRoutes.profile);
+      context.go('/profile');
     }
   }
 
@@ -44,12 +45,6 @@ class _HomePageState extends State<HomePage> {
             BannerSection(), // Widget pour la bannière
             NewsTabsWidget(), // Widget pour les tabs des actualités
             // Si tu souhaites ajouter d'autres widgets comme une liste d'articles :
-            /*
-            SizedBox(
-              height: 500,
-              child: ArticleList(), // Widget pour la liste d'articles
-            ),
-            */
           ],
         ),
       ),
