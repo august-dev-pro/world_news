@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:world_news/config/routes.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+/* import 'package:world_news/config/RouteInformationParser.dart';
+import 'package:world_news/config/RouterDelegate.dart'; */
+import 'package:world_news/config/router/app_router.dart';
+import 'package:world_news/data/providers/news_provider.dart';
 
 Future<void> main() async {
   try {
@@ -10,7 +13,14 @@ Future<void> main() async {
   } catch (e) {
     print("Erreur lors du chargement du fichier .env : $e");
   }
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => NewsProvider()),
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -27,8 +37,8 @@ class MyApp extends StatelessWidget {
       systemNavigationBarIconBrightness: Brightness.dark, // Icônes noires
     ));
 
-    String apiKey = dotenv.env['NEWS_API_KEY'] ?? 'default_value';
-    print('API Key: $apiKey');
+    /* String apiKey = dotenv.env['NEWS_API_KEY'] ?? 'default_value';
+    print('API Key: $apiKey'); */
 
     return MaterialApp.router(
       title: 'World News',
@@ -36,7 +46,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         scaffoldBackgroundColor: Colors.white, // Fond blanc par défaut
       ),
-      routerConfig: router, // Utilisation de GoRouter pour la navigation
+      routerConfig: appRouter,
     );
   }
 }

@@ -1,8 +1,6 @@
-import 'package:flutter/material.dart';
+/* import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
-import 'package:world_news/config/routes.dart';
-import 'package:world_news/main.dart';
+import 'package:world_news/presentation/pages/NewsDetailPage.dart';
 
 class NewsTabsWidget extends StatefulWidget {
   @override
@@ -160,14 +158,23 @@ class _NewsTabsWidgetState extends State<NewsTabsWidget> {
                       setState(() {
                         _clickedItems[index] = false;
                       });
-                      context.go(
-                        '/newsDetail',
-                        extra: {
-                          'about': item['about'],
-                          'title': item['title'],
-                          'details': item['details'],
-                        },
-                      );
+
+                      Future.delayed(const Duration(milliseconds: 300), () {
+                        setState(() {
+                          _clickedItems[index] = false;
+                        });
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NewsDetailPage(
+                              title: item[
+                                  'title']!, // Passer le titre de l'élément
+                              details: item[
+                                  'details']!, // Passer les détails de l'élément
+                            ),
+                          ),
+                        );
+                      });
                     });
 
                     // Après un court délai, revenir à la couleur transparente
@@ -289,5 +296,455 @@ class _NewsTabsWidgetState extends State<NewsTabsWidget> {
         ),
       ],
     );
+  }
+}
+ */
+
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import 'package:world_news/data/providers/news_provider.dart';
+import 'package:world_news/presentation/pages/NewsDetailPage.dart';
+
+class NewsTabsWidget extends StatefulWidget {
+  @override
+  _NewsTabsWidgetState createState() => _NewsTabsWidgetState();
+}
+
+class _NewsTabsWidgetState extends State<NewsTabsWidget> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(
+        () => Provider.of<NewsProvider>(context, listen: false).loadNews());
+  }
+
+  int _selectedTabIndex = 0;
+  List<bool> _clickedItems = [];
+
+  @override
+  Widget build(BuildContext context) {
+    final newsProvider = Provider.of<NewsProvider>(context);
+    final categories = newsProvider.categories;
+
+// Vérifie si la liste des catégories est vide
+    if (categories.isEmpty) {
+      print("⚠️ Aucune catégorie disponible !");
+      return Center(child: Text("Aucune catégorie disponible"));
+    }
+
+// Vérifie si l'index sélectionné est valide
+    if (_selectedTabIndex < 0 || _selectedTabIndex >= categories.length) {
+      print("⚠️ Index sélectionné invalide !");
+      return Center(child: Text("Catégorie non valide"));
+    }
+
+    final articles =
+        newsProvider.getNewsByCategory(categories[_selectedTabIndex] ?? '');
+
+// Vérifie si des articles sont bien récupérés
+    if (articles.isEmpty) {
+      print("⚠️ Aucun article trouvé pour la catégorie sélectionnée !");
+    }
+
+    for (var article in articles) {
+      print(
+          "Article: ${article.title}, ${article.category}, ${article.imageUrl}");
+    }
+
+// Met à jour _clickedItems en fonction du nombre d'articles
+    if (_clickedItems.length != articles.length) {
+      _clickedItems = List.generate(articles.length, (_) => false);
+    }
+
+    // Remplacer temporairement par un simple retour pour tester les données récupérées
+    /*  return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text("Categories:"),
+          // Affiche les catégories récupérées
+          for (var category in categories) Text(category ?? "Pas de catégorie"),
+
+          SizedBox(height: 20),
+
+          Text("Articles:"),
+          // Affiche les articles récupérés
+          for (var article in articles)
+            Text(article.title ?? "Pas de titre d'article"),
+
+          // Optionnel : vérifier l'état de chargement
+          if (newsProvider.isLoading) const CircularProgressIndicator(),
+          if (articles.isEmpty) const Text("Aucun article disponible"),
+        ],
+      ),
+    ); */
+
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Onglets de catégories
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(categories.length, (index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedTabIndex = index;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      color: _selectedTabIndex == index
+                          ? Colors.black
+                          : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      categories[index]!,
+                      style: TextStyle(
+                        color: _selectedTabIndex == index
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ),
+
+        // Liste des articles
+        newsProvider.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : articles.isEmpty
+                ? const Center(child: Text("Aucun article disponible"))
+                : ListView.builder(
+                    shrinkWrap:
+                        true, // Cela permet à la ListView de s'adapter à la taille de son parent
+                    physics:
+                        NeverScrollableScrollPhysics(), // Désactive le défilement interne
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      var item = articles[index];
+
+                      return Padding(
+                        // key: ValueKey(articles[index].id),
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _clickedItems[index] = true;
+                            });
+
+                            Future.delayed(const Duration(milliseconds: 300),
+                                () {
+                              if (!mounted)
+                                return; // Vérifie que le widget est encore actif
+
+                              setState(() {
+                                _clickedItems[index] = false;
+                              });
+
+                              // Navigation avec GoRouter
+                              context.push('/details', extra: item);
+                            });
+                          },
+                          child: AnimatedContainer(
+                            key: ValueKey(item.id),
+                            duration: const Duration(milliseconds: 200),
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.grey[300]!, width: 1),
+                              color: _clickedItems[index]
+                                  ? Colors.grey[200]
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 180,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.category,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(Icons.access_time,
+                                                  color: Colors.grey, size: 15),
+                                              SizedBox(width: 3),
+                                              Text(
+                                                "1h ago",
+                                                style: TextStyle(
+                                                    fontSize: 12,
+                                                    color: Colors.grey),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(FontAwesomeIcons.comment,
+                                                  color: Colors.grey, size: 12),
+                                              SizedBox(width: 3),
+                                              Text("5",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.grey)),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 90,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: Image.network(
+                                      item.imageUrl,
+                                      fit: BoxFit.cover,
+                                      height: 80,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                            "assets/imgs/buildding.jpg",
+                                            fit: BoxFit.cover,
+                                            height: 80);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+      ],
+    );
+
+    /* return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        // Onglets de catégories
+        Container(
+          margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: List.generate(categories.length, (index) {
+                return GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      _selectedTabIndex = index;
+                    });
+                  },
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                    margin: const EdgeInsets.only(right: 10),
+                    decoration: BoxDecoration(
+                      color: _selectedTabIndex == index
+                          ? Colors.black
+                          : Colors.grey[300],
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      categories[index]!,
+                      style: TextStyle(
+                        color: _selectedTabIndex == index
+                            ? Colors.white
+                            : Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                );
+              }),
+            ),
+          ),
+        ),
+
+        // Liste des articles
+        newsProvider.isLoading
+            ? const Center(child: CircularProgressIndicator())
+            : articles.isEmpty
+                ? const Center(child: Text("Aucun article disponible"))
+                : ListView.builder(
+                    shrinkWrap:
+                        true, // Cela permet à la ListView de s'adapter à la taille de son parent
+                    physics:
+                        NeverScrollableScrollPhysics(), // Désactive le défilement interne
+                    itemCount: articles.length,
+                    itemBuilder: (context, index) {
+                      var item = articles[index];
+
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 15, horizontal: 20),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _clickedItems[index] = true;
+                            });
+
+                            Future.delayed(const Duration(milliseconds: 300),
+                                () {
+                              setState(() {
+                                _clickedItems[index] = false;
+                              });
+
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => NewsDetailPage(
+                                    title: item.title,
+                                    details: item.details,
+                                  ),
+                                ),
+                              );
+                            });
+                          },
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            padding: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                  color: Colors.grey[300]!, width: 1),
+                              color: _clickedItems[index]
+                                  ? Colors.grey[200]
+                                  : Colors.transparent,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                SizedBox(
+                                  width: 180,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.category,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                          color: Colors.black,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        item.title,
+                                        style: const TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                        ),
+                                        maxLines: 2,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                      const SizedBox(height: 5),
+                                      const Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: [
+                                              Icon(Icons.access_time,
+                                                  color: Colors.grey, size: 15),
+                                              SizedBox(width: 3),
+                                              Text("1h ago",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.grey)),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
+                                              Icon(FontAwesomeIcons.comment,
+                                                  color: Colors.grey, size: 12),
+                                              SizedBox(width: 3),
+                                              Text("5",
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: Colors.grey)),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                SizedBox(
+                                  width: 90,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(14),
+                                    child: Image.network(
+                                      item.imageUrl,
+                                      fit: BoxFit.cover,
+                                      height: 80,
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Image.asset(
+                                            "assets/imgs/buildding.jpg",
+                                            fit: BoxFit.cover,
+                                            height: 80);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+      ],
+    ); */
   }
 }

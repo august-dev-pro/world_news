@@ -23,17 +23,21 @@ Future<List<Article>> fetchArticles() async {
 class Article {
   final String title;
   final String description;
+  final String content;
   final String urlToImage;
 
-  Article(
-      {required this.title,
-      required this.description,
-      required this.urlToImage});
+  Article({
+    required this.title,
+    required this.description,
+    required this.content,
+    required this.urlToImage,
+  });
 
   factory Article.fromJson(Map<String, dynamic> json) {
     return Article(
       title: json['title'],
       description: json['description'],
+      content: json['content'],
       urlToImage: json['urlToImage'],
     );
   }

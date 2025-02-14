@@ -1,16 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:go_router/go_router.dart';
+import 'package:world_news/data/models/news.dart';
 
 class NewsDetailPage extends StatefulWidget {
-  final String title;
-  final String details;
+  final News newData;
 
-  const NewsDetailPage({
-    super.key,
-    required this.title,
-    required this.details,
-  });
+  const NewsDetailPage(this.newData) /* : super(key: key) */;
 
   @override
   _NewsDetailPageState createState() => _NewsDetailPageState();
@@ -50,7 +45,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => context.pop(),
+          onPressed: () => Navigator.pop(context),
         ),
         actions: [
           IconButton(
@@ -77,7 +72,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             children: [
               // Titre
               Text(
-                widget.title,
+                widget.newData.title,
                 style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.w900,
@@ -89,17 +84,30 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               // Image avec bords arrondis
               ClipRRect(
                 borderRadius: BorderRadius.circular(16.0),
-                child: Image.asset(
-                  "assets/imgs/buildding.jpg",
+                child: Image.network(
+                  widget.newData.imageUrl,
                   height: 150,
                   width: double.infinity,
                   fit: BoxFit.cover,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(child: CircularProgressIndicator());
+                  },
+                  errorBuilder: (context, error, stackTrace) {
+                    return Image.asset(
+                      "assets/imgs/default.jpg", // Image de secours si l'URL est invalide
+                      height: 150,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    );
+                  },
                 ),
               ),
+
               const SizedBox(height: 16),
               // Détails
               Text(
-                widget.details,
+                widget.newData.details,
                 style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
@@ -107,11 +115,9 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-                'Vestibulum vel dolor nec ipsum varius vehicula. Integer '
-                'congue eros et ex cursus, et convallis nulla feugiat.',
-                style: TextStyle(
+              Text(
+                widget.newData.details,
+                style: const TextStyle(
                   fontSize: 16,
                   color: Colors.black54,
                   height: 1.5,

@@ -1,5 +1,5 @@
-// lib/widgets/bottom_nav_bar.dart
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class BottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -15,24 +15,16 @@ class BottomNavBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: selectedIndex,
-      onTap: onItemTapped,
+      onTap: (index) {
+        onItemTapped(index);
+      },
       items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.search), label: 'Search'),
         BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
+            icon: Icon(Icons.format_list_bulleted), label: 'List'),
         BottomNavigationBarItem(
-          icon: Icon(Icons.search),
-          label: 'search',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.format_list_bulleted),
-          label: 'list',
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.account_circle),
-          label: 'Profile',
-        ),
+            icon: Icon(Icons.account_circle), label: 'Profile'),
       ],
       selectedItemColor: Colors.blue,
       unselectedItemColor: Colors.grey,
