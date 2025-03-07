@@ -1,32 +1,3 @@
-/* import 'dart:developer';
-
-import 'package:dio/dio.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-class NewsService {
-  final Dio _dio = Dio();
-  final String _baseUrl = "https://newsapi.org/v2/top-headlines";
-
-  Future<List<dynamic>> fetchTopHeadlines({String country = "us"}) async {
-    final apiKey = dotenv.env['API_KEY'];
-    try {
-      Response response = await _dio.get(
-        _baseUrl,
-        queryParameters: {
-          "country": country,
-          "apiKey": apiKey,
-        },
-      );
-      print("news recuperer avec succes: $response");
-      return response.data["articles"];
-    } catch (e) {
-      print("Erreur de chargement des news: $e");
-      return [];
-    }
-  }
-}
- */
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

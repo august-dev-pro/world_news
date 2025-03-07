@@ -26,7 +26,7 @@ class BottomNavBar extends StatelessWidget {
         BottomNavigationBarItem(
             icon: Icon(Icons.account_circle), label: 'Profile'),
       ],
-      selectedItemColor: Colors.blue,
+      selectedItemColor: Colors.purple,
       unselectedItemColor: Colors.grey,
       showUnselectedLabels: true,
       backgroundColor: Colors.white,

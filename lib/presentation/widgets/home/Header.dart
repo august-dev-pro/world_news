@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
-import 'package:world_news/presentation/pages/Settings_Page.dart'; // Pour formater la date
+// Pour formater la date
 
 class Header extends StatelessWidget {
   @override
@@ -9,7 +9,6 @@ class Header extends StatelessWidget {
     // Formatage de la date actuelle
     String formattedDate =
         DateFormat('EEEE, d MMMM yyyy').format(DateTime.now());
-
     return Container(
       margin:
           const EdgeInsets.only(top: 60.0, bottom: 15.0), // Espacement en haut

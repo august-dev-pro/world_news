@@ -153,8 +153,9 @@ class _HomePageState extends State<HomePage> {
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:world_news/presentation/widgets/CustomeAppBar.dart';
 import 'package:world_news/presentation/widgets/home/BannerWidget.dart';
-import 'package:world_news/presentation/widgets/home/Header.dart';
+// import 'package:world_news/presentation/widgets/home/Header.dart';
 import 'package:world_news/presentation/widgets/home/NewsTabsWidget.dart';
 
 class HomePage extends StatelessWidget {
@@ -173,10 +174,11 @@ class HomePage extends StatelessWidget {
     return WillPopScope(
       onWillPop: () => _onWillPop(context), // Empêche la fermeture directe
       child: Scaffold(
+        appBar: CustomAppBar(),
         body: SingleChildScrollView(
           child: Column(
             children: [
-              Header(),
+              // Header(),
               BannerSection(),
               NewsTabsWidget(),
             ],

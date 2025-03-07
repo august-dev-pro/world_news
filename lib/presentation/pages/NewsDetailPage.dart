@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 import 'package:world_news/data/models/news.dart';
 
 class NewsDetailPage extends StatefulWidget {
@@ -42,10 +43,10 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+      /*  appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
         actions: [
           IconButton(
@@ -61,32 +62,122 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
             },
           ),
         ],
-        backgroundColor: Colors.white,
+        backgroundColor: const Color.fromARGB(0, 255, 255, 255),
+      ), */
+
+      // extendBodyBehindAppBar: true, // Permet au contenu de passer sous l'AppBar
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: AppBar(
+          backgroundColor: Colors.white, // Rend l'AppBar transparente
+          elevation: 0, // Supprime l'ombre
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back,
+                color: Colors.black), // Icône blanche
+            onPressed: () => context.pop(),
+          ),
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.headset_mic, color: Colors.black),
+              onPressed: () {},
+            ),
+            IconButton(
+              icon: const Icon(Icons.more_vert, color: Colors.black),
+              onPressed: () {},
+            ),
+          ],
+        ),
       ),
+
+      // contenu
       body: SingleChildScrollView(
         controller: _scrollController,
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.only(left: 16, right: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Image avec bords arrondis
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(Icons.verified,
+                            color: Colors.blue, size: 15), // Icône vérifiée
+                        const SizedBox(width: 2),
+                        const Text(
+                          'Michael David Smith',
+                          style: TextStyle(
+                              fontFamily: 'Quicksand-Bold',
+                              fontSize: 12,
+                              fontWeight: FontWeight.w900),
+                        ),
+                        const SizedBox(width: 2),
+                        const Icon(Icons.arrow_right,
+                            color: Colors.grey, size: 20), // Flèche
+                        const SizedBox(width: 4),
+                        const Text(
+                          'categorie',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: 13,
+                              fontFamily: "kanit-thin",
+                              color: Color.fromARGB(255, 92, 92, 92)),
+                        ),
+                      ],
+                    ),
+                    GestureDetector(
+                        onTap: () {
+                          /* logique pour faire l'action de follow */
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF7D26DF).withOpacity(0.1),
+                            border:
+                                Border.all(color: Color(0xFF7D26DF), width: 1),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: const Text(
+                            'Follow',
+                            style: TextStyle(
+                                fontSize: 12,
+                                color: Color(0xFF7D26DF),
+                                // Texte violet
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Quicksand-Bold'),
+                          ),
+                        ))
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
               // Titre
               Text(
                 widget.newData.title,
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 18,
                   fontWeight: FontWeight.w900,
                   fontFamily: "Quicksand-Bold",
                   color: Colors.black87,
                 ),
               ),
-              const SizedBox(height: 16),
-              // Image avec bords arrondis
+              const SizedBox(height: 18),
+
               ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
+                borderRadius: const BorderRadius.all(Radius.circular(16)
+                    /*      topLeft: Radius.zero,
+                  topRight: Radius.zero,
+                  bottomLeft: Radius.circular(16.0),
+                  bottomRight: Radius.circular(16.0), */
+                    ),
                 child: Image.network(
                   widget.newData.imageUrl,
-                  height: 150,
+                  height: 180,
                   width: double.infinity,
                   fit: BoxFit.cover,
                   loadingBuilder: (context, child, loadingProgress) {
@@ -105,10 +196,13 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               ),
 
               const SizedBox(height: 16),
+
               // Détails
               Text(
                 widget.newData.details,
                 style: const TextStyle(
+                  fontFamily: 'kanit-thin',
+                  fontWeight: FontWeight.w900,
                   fontSize: 16,
                   color: Colors.black54,
                   height: 1.5,
@@ -118,6 +212,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
               Text(
                 widget.newData.details,
                 style: const TextStyle(
+                  fontFamily: 'kanit-thin',
+                  fontWeight: FontWeight.w900,
                   fontSize: 16,
                   color: Colors.black54,
                   height: 1.5,
@@ -128,6 +224,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 'Aliquam erat volutpat. Donec ac diam ut libero elementum '
                 'condimentum. Phasellus pretium ligula et sem tincidunt.',
                 style: TextStyle(
+                  fontFamily: 'kanit-thin',
+                  fontWeight: FontWeight.w900,
                   fontSize: 16,
                   color: Colors.black54,
                   height: 1.5,
@@ -144,6 +242,8 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 'Vestibulum vel dolor nec ipsum varius vehicula. Integer '
                 'congue eros et ex cursus, et convallis nulla feugiat.',
                 style: TextStyle(
+                  fontFamily: 'kanit-thin',
+                  fontWeight: FontWeight.w900,
                   fontSize: 16,
                   color: Colors.black54,
                   height: 1.5,
@@ -154,17 +254,29 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                 'Aliquam erat volutpat. Donec ac diam ut libero elementum '
                 'condimentum. Phasellus pretium ligula et sem tincidunt.',
                 style: TextStyle(
+                  fontFamily: 'kanit-thin',
+                  fontWeight: FontWeight.w900,
                   fontSize: 16,
                   color: Colors.black54,
                   height: 1.5,
                 ),
               ),
+              const SizedBox(height: 16),
             ],
           ),
         ),
       ),
+
+      // bar de navigation de bas
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Color.fromARGB(66, 92, 92, 92), // Couleur de l'ombre
+              blurRadius: 4, // Flou de l'ombre
+              offset: Offset(2, 2), // Décalage de l'ombre
+            )
+          ],
           border: Border(
             top: BorderSide(
                 color: Color.fromARGB(52, 224, 224, 224), width: 1.0),
@@ -173,7 +285,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
         ),
         child: Padding(
           padding:
-              const EdgeInsets.only(top: 15, left: 16, right: 16, bottom: 5),
+              const EdgeInsets.only(top: 15, left: 16, right: 16, bottom: 50),
           child: Row(
             children: [
               // Section gauche : Like et Comment
@@ -189,7 +301,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
                       padding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, top: 3.0, bottom: 3.0),
+                          left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(30),
@@ -223,9 +335,9 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                           const Text(
                             '46K', // Exemple de nombre de likes
                             style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black87,
-                            ),
+                                fontSize: 15,
+                                color: Colors.black87,
+                                fontFamily: 'Quicksand-Bold'),
                           ),
                         ],
                       ),
@@ -239,7 +351,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                     },
                     child: Container(
                       padding: const EdgeInsets.only(
-                          left: 10.0, right: 10.0, top: 3.0, bottom: 3.0),
+                          left: 10.0, right: 10.0, top: 5.0, bottom: 5.0),
                       decoration: BoxDecoration(
                         color: Colors.black.withOpacity(0.05),
                         borderRadius: BorderRadius.circular(30),
@@ -255,9 +367,9 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                           Text(
                             '97', // Exemple de nombre de commentaires
                             style: TextStyle(
-                              fontSize: 15,
-                              color: Colors.black87,
-                            ),
+                                fontSize: 15,
+                                color: Colors.black87,
+                                fontFamily: 'Quicksand-Bold'),
                           ),
                         ],
                       ),
@@ -277,7 +389,7 @@ class _NewsDetailPageState extends State<NewsDetailPage> {
                       value: _scrollProgress / 100,
                       strokeWidth: 3,
                       valueColor: const AlwaysStoppedAnimation<Color>(
-                          Colors.indigoAccent),
+                          Color(0xFF7D26DF)),
                       backgroundColor: Colors.grey[300],
                     ),
                   ),

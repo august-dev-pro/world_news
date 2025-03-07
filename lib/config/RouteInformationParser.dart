@@ -7,7 +7,7 @@ class MyRouteInformationParser extends RouteInformationParser<RoutePath> {
       RouteInformation routeInformation) async {
     // Ici, on analyse l'URL de la route
     // ignore: deprecated_member_use
-    final uri = Uri.parse(routeInformation.location ?? '/');
+    final uri = Uri.parse(routeInformation.location ?? '/home');
 
     if (uri.pathSegments.isEmpty) {
       return RoutePath.home();
@@ -26,7 +26,7 @@ class MyRouteInformationParser extends RouteInformationParser<RoutePath> {
   RouteInformation? restoreRouteInformation(RoutePath configuration) {
     // Restaure l'URL pour chaque page
     if (configuration.isHomePage) {
-      return const RouteInformation(location: '/');
+      return const RouteInformation(location: '/home');
     } else if (configuration.isProfilePage) {
       return const RouteInformation(location: '/profile');
     } else if (configuration.isNewsDetailsPage) {
@@ -34,7 +34,7 @@ class MyRouteInformationParser extends RouteInformationParser<RoutePath> {
     } else if (configuration.isSettingsPage) {
       return const RouteInformation(location: '/settings');
     } else {
-      return const RouteInformation(location: '/');
+      return const RouteInformation(location: '/home');
     }
   }
 }

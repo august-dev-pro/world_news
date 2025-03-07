@@ -12,7 +12,7 @@ class NewsRepositoryImpl implements NewsRepository {
     try {
       List<dynamic> articles =
           await _newsService.fetchTopHeadlines(country: "fr");
-      print("Articles reçus: $articles");
+      // print("Articles reçus: $articles");
 
       return articles.map((article) {
         String title = article.title ?? "Titre inconnu";

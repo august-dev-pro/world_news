@@ -1,0 +1,2 @@
+D:/world_news/android/app/.cxx/Debug/335k6t3r/x86/CMakeFiles/edit_cache.dir
+D:/world_news/android/app/.cxx/Debug/335k6t3r/x86/CMakeFiles/rebuild_cache.dir

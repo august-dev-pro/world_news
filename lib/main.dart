@@ -30,7 +30,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     // Modifier la couleur de la barre de statut
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white, // Fond blanc pour la barre d'état
+      statusBarColor: Colors.purple,
+      // Fond blanc pour la barre d'état
       statusBarIconBrightness: Brightness.dark, // Icônes noires
       systemNavigationBarColor:
           Colors.white, // Fond blanc pour la barre de navigation
